@@ -31,11 +31,10 @@ func problem5(ctx *problemContext) {
 	ctx.reportPart1(maxID)
 
 	for n := maxID - 1; ; n-- {
-		if _, ok := ids[n]; ok {
-			continue
+		if _, ok := ids[n]; !ok {
+			ctx.reportPart2(n)
+			break
 		}
-		ctx.reportPart2(n)
-		break
 	}
 
 }
