@@ -38,6 +38,9 @@ func splitGroups(data []byte, atEOF bool) (advance int, token []byte, err error)
 	i := bytes.Index(data, []byte("\n\n"))
 	if i < 0 {
 		if atEOF && len(data) > 0 {
+			if data[len(data)-1] == '\n' {
+				return len(data), data[:len(data)-1], nil
+			}
 			return len(data), data, nil
 		}
 		return 0, nil, nil
