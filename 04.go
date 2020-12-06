@@ -14,7 +14,7 @@ func init() {
 func problem4(ctx *problemContext) {
 	var passports []passport
 	scanner := ctx.scanner()
-	scanner.s.Split(splitPassports)
+	scanner.s.Split(splitGroups)
 	for scanner.scan() {
 		passports = append(passports, parsePassport(scanner.text()))
 	}
@@ -34,7 +34,7 @@ func problem4(ctx *problemContext) {
 	ctx.reportPart2(valid2)
 }
 
-func splitPassports(data []byte, atEOF bool) (advance int, token []byte, err error) {
+func splitGroups(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	i := bytes.Index(data, []byte("\n\n"))
 	if i < 0 {
 		if atEOF && len(data) > 0 {
