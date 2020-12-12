@@ -234,3 +234,74 @@ func abs(n int64) int64 {
 	}
 	return n
 }
+
+type vec2 struct {
+	x int64
+	y int64
+}
+
+func (v vec2) add(v1 vec2) vec2 {
+	return vec2{v.x + v1.x, v.y + v1.y}
+}
+
+func (v vec2) mul(m int64) vec2 {
+	return vec2{v.x * m, v.y * m}
+}
+
+func (v vec2) mag() int64 {
+	return abs(v.x) + abs(v.y)
+}
+
+var (
+	vnorth = vec2{0, 1}
+	veast  = vec2{1, 0}
+	vsouth = vec2{0, -1}
+	vwest  = vec2{-1, 0}
+)
+
+type cardinal int
+
+const (
+	north cardinal = iota
+	east
+	south
+	west
+)
+
+var cardinals = [4]vec2{
+	north: vnorth,
+	east:  veast,
+	south: vsouth,
+	west:  vwest,
+}
+
+type mat2 struct {
+	a00, a01 int64
+	a10, a11 int64
+}
+
+func (v vec2) matMul(m mat2) vec2 {
+	return vec2{
+		v.x*m.a00 + v.y*m.a01,
+		v.x*m.a10 + v.y*m.a11,
+	}
+}
+
+var rotations = [4]mat2{
+	{ // 0
+		1, 0,
+		0, 1,
+	},
+	{ // 90
+		0, 1,
+		-1, 0,
+	},
+	{ // 180
+		-1, 0,
+		0, -1,
+	},
+	{ // 270
+		0, -1,
+		1, 0,
+	},
+}
