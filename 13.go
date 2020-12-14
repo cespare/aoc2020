@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-	"strconv"
 	"strings"
 )
 
@@ -23,11 +21,7 @@ func problem13(ctx *problemContext) {
 				if s == "x" {
 					busSchedule = append(busSchedule, -1)
 				} else {
-					n, err := strconv.ParseInt(s, 10, 64)
-					if err != nil {
-						log.Fatal(err)
-					}
-					busSchedule = append(busSchedule, n)
+					busSchedule = append(busSchedule, parseInt(s, 10, 64))
 				}
 			}
 		}

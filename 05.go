@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-	"strconv"
 	"strings"
 )
 
@@ -17,11 +15,7 @@ func problem5(ctx *problemContext) {
 	scanner := ctx.scanner()
 	for scanner.scan() {
 		s := replacer.Replace(scanner.text())
-		n, err := strconv.ParseInt(s, 2, 32)
-		if err != nil {
-			log.Fatal(err)
-		}
-		id := int(n)
+		id := int(parseInt(s, 2, 32))
 		ids[id] = struct{}{}
 		if id > maxID {
 			maxID = id

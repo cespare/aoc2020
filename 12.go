@@ -1,10 +1,5 @@
 package main
 
-import (
-	"log"
-	"strconv"
-)
-
 func init() {
 	addSolutions(12, problem12)
 }
@@ -38,11 +33,7 @@ type shipDir struct {
 func parseShipDir(s string) shipDir {
 	var sd shipDir
 	sd.c = s[0]
-	var err error
-	sd.d, err = strconv.ParseInt(s[1:], 10, 64)
-	if err != nil {
-		log.Fatal(err)
-	}
+	sd.d = parseInt(s[1:], 10, 64)
 	return sd
 }
 

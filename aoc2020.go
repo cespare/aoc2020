@@ -305,3 +305,19 @@ var rotations = [4]mat2{
 		1, 0,
 	},
 }
+
+func parseInt(s string, base int, bitSize int) int64 {
+	n, err := strconv.ParseInt(s, base, bitSize)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return n
+}
+
+func parseUint(s string, base int, bitSize int) uint64 {
+	n, err := strconv.ParseUint(s, base, bitSize)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return n
+}
