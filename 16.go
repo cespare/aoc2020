@@ -2,7 +2,6 @@ package main
 
 import (
 	"regexp"
-	"sort"
 	"strings"
 
 	"github.com/cespare/hasty"
@@ -71,61 +70,80 @@ func problem16(ctx *problemContext) {
 	ctx.reportPart1(errRate)
 
 	k := len(tickets[0])
-	candidates := make([]map[int]struct{}, k)
-	for i := range candidates {
-		candidate := make(map[int]struct{})
-		for j := range rules {
-			candidate[j] = struct{}{}
+	table := make([][]bool, k) // k x k truth table describing the constraints
+	for i := range table {
+		row := make([]bool, k)
+		for j := range row {
+			row[j] = true
 		}
-		candidates[i] = candidate
+		table[i] = row
 	}
 	for _, tick := range tickets {
 		for i, n := range tick {
 			for j, rule := range rules {
-				if !rule.matches(n) {
-					delete(candidates[i], j)
-				}
+				table[i][j] = table[i][j] && rule.matches(n)
 			}
 		}
 	}
 
-	order := make([]int, k)
-	for i := range order {
-		order[i] = i
-	}
-	sort.Slice(order, func(i, j int) bool {
-		return len(candidates[i]) < len(candidates[j])
-	})
+	// atom # (1-indexed) is fieldIdx * k + ruleIdx + 1
 
-	soln := make([]int, k)
-	for i := range soln {
-		soln[i] = -1
-	}
-	var solve func(int) bool
-	solve = func(n int) bool {
-		if n == k {
-			return true
-		}
-		i := order[n]
-	candidateLoop:
-		for c := range candidates[i] {
-			for _, c1 := range soln {
-				if c == c1 { // already used
-					continue candidateLoop
-				}
-			}
-			soln[i] = c
-			if solve(n + 1) {
-				return true
+	var cnfClauses [][]int
+	// For each row, use a clause to indicate that one of the available
+	// rules must match and multiple negative atoms to mark the positions
+	// that are disallowed.
+	for i, row := range table {
+		var allowed []int
+		for j, ok := range row {
+			atom := i*k + j + 1
+			if ok {
+				allowed = append(allowed, atom)
+			} else {
+				cnfClauses = append(cnfClauses, []int{-atom})
 			}
 		}
-		soln[i] = -1
-		return false
+		cnfClauses = append(cnfClauses, allowed)
+		// Now add the constraint that each field index must correspond
+		// to only one rule. For each pair of valid fields A, B:
+		// ¬(A ∧ B) -> ¬A ∨ ¬B.
+		for d, a0 := range allowed {
+			for _, a1 := range allowed[d+1:] {
+				pair := []int{-a0, -a1}
+				cnfClauses = append(cnfClauses, pair)
+			}
+		}
 	}
-	solve(0)
+	// For each column, indicate that each rule must correspond to only one
+	// field by using negative pairs the same way.
+	for j := 0; j < k; j++ {
+		var allowed []int
+		for i := 0; i < k; i++ {
+			if table[i][j] {
+				atom := i*k + j + 1
+				allowed = append(allowed, atom)
+			}
+		}
+		for d, a0 := range allowed {
+			for _, a1 := range allowed[d+1:] {
+				pair := []int{-a0, -a1}
+				cnfClauses = append(cnfClauses, pair)
+			}
+		}
+	}
+	var t int
+	for _, clause := range cnfClauses {
+		t += len(clause)
+	}
+
+	soln, ok := solveSAT(cnfClauses)
+	if !ok {
+		panic("no solution")
+	}
 
 	m := int64(1)
-	for i, j := range soln {
+	for _, atom := range soln {
+		atom--
+		i, j := atom/k, atom%k
 		rule := rules[j]
 		if !strings.HasPrefix(rule.name, "departure ") {
 			continue
@@ -133,15 +151,6 @@ func problem16(ctx *problemContext) {
 		m *= int64(yourTicket[i])
 	}
 	ctx.reportPart2(m)
-}
-
-func indexIn(ns []int, n int) int {
-	for i, n1 := range ns {
-		if n1 == n {
-			return i
-		}
-	}
-	panic("not found")
 }
 
 type ticketRule struct {
