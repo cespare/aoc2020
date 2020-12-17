@@ -321,3 +321,62 @@ func parseUint(s string, base int, bitSize int) uint64 {
 	}
 	return n
 }
+
+type vec3 struct {
+	x, y, z int64
+}
+
+func (v vec3) add(v1 vec3) vec3 {
+	return vec3{
+		x: v.x + v1.x,
+		y: v.y + v1.y,
+		z: v.z + v1.z,
+	}
+}
+
+func (v vec3) neighbors() []vec3 {
+	neighbors := make([]vec3, 0, 26)
+	for dx := int64(-1); dx <= 1; dx++ {
+		for dy := int64(-1); dy <= 1; dy++ {
+			for dz := int64(-1); dz <= 1; dz++ {
+				if dx == 0 && dy == 0 && dz == 0 {
+					continue
+				}
+				v1 := vec3{v.x + dx, v.y + dy, v.z + dz}
+				neighbors = append(neighbors, v1)
+			}
+		}
+	}
+	return neighbors
+}
+
+type vec4 struct {
+	x, y, z, w int64
+}
+
+func (v vec4) add(v1 vec4) vec4 {
+	return vec4{
+		x: v.x + v1.x,
+		y: v.y + v1.y,
+		z: v.z + v1.z,
+		w: v.w + v1.w,
+	}
+}
+
+func (v vec4) neighbors() []vec4 {
+	neighbors := make([]vec4, 0, 80)
+	for dx := int64(-1); dx <= 1; dx++ {
+		for dy := int64(-1); dy <= 1; dy++ {
+			for dz := int64(-1); dz <= 1; dz++ {
+				for dw := int64(-1); dw <= 1; dw++ {
+					if dx == 0 && dy == 0 && dz == 0 && dw == 0 {
+						continue
+					}
+					v1 := vec4{v.x + dx, v.y + dy, v.z + dz, v.w + dw}
+					neighbors = append(neighbors, v1)
+				}
+			}
+		}
+	}
+	return neighbors
+}
