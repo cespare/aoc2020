@@ -309,7 +309,7 @@ var rotations = [4]mat2{
 func parseInt(s string, base int, bitSize int) int64 {
 	n, err := strconv.ParseInt(s, base, bitSize)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	return n
 }
@@ -317,7 +317,7 @@ func parseInt(s string, base int, bitSize int) int64 {
 func parseUint(s string, base int, bitSize int) uint64 {
 	n, err := strconv.ParseUint(s, base, bitSize)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	return n
 }
