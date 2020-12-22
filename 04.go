@@ -117,10 +117,3 @@ func (pp passport) valid() bool {
 	}
 	return true
 }
-
-func trimSuffix(s, suf string) (string, bool) {
-	if strings.HasSuffix(s, suf) {
-		return s[:len(s)-len(suf)], true
-	}
-	return s, false
-}

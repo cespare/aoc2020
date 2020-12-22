@@ -380,3 +380,17 @@ func (v vec4) neighbors() []vec4 {
 	}
 	return neighbors
 }
+
+func trimSuffix(s, suf string) (string, bool) {
+	if strings.HasSuffix(s, suf) {
+		return s[:len(s)-len(suf)], true
+	}
+	return s, false
+}
+
+func trimPrefix(s, pref string) (string, bool) {
+	if strings.HasPrefix(s, pref) {
+		return s[len(pref):], true
+	}
+	return s, false
+}
