@@ -4,5 +4,5 @@ go 1.15
 
 require (
 	github.com/cespare/hasty v0.0.1
-	github.com/google/go-cmp v0.5.4
+	github.com/cespare/saturday v0.0.1
 )

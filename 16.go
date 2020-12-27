@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/cespare/hasty"
+	"github.com/cespare/saturday"
 )
 
 func init() {
@@ -135,15 +136,18 @@ func problem16(ctx *problemContext) {
 		t += len(clause)
 	}
 
-	soln, ok := solveSAT(cnfClauses)
+	soln, _, ok := saturday.Solve(cnfClauses)
 	if !ok {
 		panic("no solution")
 	}
 
 	m := int64(1)
-	for _, atom := range soln {
-		atom--
-		i, j := atom/k, atom%k
+	for _, v := range soln {
+		if v < 0 {
+			continue
+		}
+		v--
+		i, j := v/k, v%k
 		rule := rules[j]
 		if !strings.HasPrefix(rule.name, "departure ") {
 			continue

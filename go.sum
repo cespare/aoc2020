@@ -1,5 +1,7 @@
 github.com/cespare/hasty v0.0.1 h1:WA4UNj6KR9GrPyonn6JecSkODL50KeqeXzAgl3Ereb8=
 github.com/cespare/hasty v0.0.1/go.mod h1:bFPDtJZXO1YP9bgCzEnCUn2wuUyOxLoMhrdqBSVtVEQ=
+github.com/cespare/saturday v0.0.1 h1:59ciTpjOAgzkss+zq5AcCJoa4qMDJOhsfxV+lfvnreY=
+github.com/cespare/saturday v0.0.1/go.mod h1:WSBLe9K9JxezSESHReUKs7Xvh0zfyqzrC3Uij0Meqvg=
 github.com/google/go-cmp v0.5.4 h1:L8R9j+yAqZuZjsqh/z+F1NCffTKKLShY6zXTItVIZ8M=
 github.com/google/go-cmp v0.5.4/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=
